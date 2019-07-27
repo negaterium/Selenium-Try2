@@ -25,11 +25,12 @@ public class AppTest {
     @Test
     public void runMultipletTests() {
 
-        initDriver();
+        //initDriver();
         cDriver.manage().window().maximize();
         loginTest();
         //wishList();
         //registerNewUser();
+        testSelectors();
         logoutTest();
         deactivateDriver();
     }
@@ -56,9 +57,50 @@ public class AppTest {
         //Assert.assertTrue(userName.getText().contentEquals("Welcome, TesterFN TesterLN!"));
         System.out.println("Login web test completed");
         System.out.println("---------------------------------------");
-        cDriver.close();
     }
 
+    @Test
+    public void addItemsToCart()
+    {
+        Assert.assertNotNull(cDriver);
+        cDriver.get("https://fasttrackit.org/selenium-test/");
+        System.out.println("---------------------------------------");
+        System.out.println("Running test to add items to the shopping cart");
+        WebElement logo = cDriver.findElement(By.className("logo"));
+        logo.click();
+        //WebElement saleButton = cDriver.findElement(By.className("li.level0.nav-5.active.parent"));
+        // #nav > ol > li.level0.nav-5.active.parent
+        cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.active.parent.menu-active > a")).click();
+        //saleButton.click();
+        WebElement firstImage = cDriver.findElement(By.cssSelector("#product-collection-image-423"));
+        firstImage.click();
+
+
+
+        wait(2);
+        System.out.println("Add items to cart test completed");
+        System.out.println("---------------------------------------");
+
+    }
+
+    @Test
+    public void testSelectors() {
+        cDriver.get("https://fasttrackit.org/selenium-test/");
+        System.out.println("---------------------------------------");
+        System.out.println("Running selectors check web test");
+        System.out.println("-------");
+        System.out.println("Checking the Search button");
+        WebElement searchIcon = cDriver.findElement(By.className("search-button"));
+        cDriver.findElement(By.cssSelector("#search")).sendKeys("test");
+        searchIcon.click();
+        wait(3);
+        addItemsToCart();
+        System.out.println("Checking the first Delete button");
+        //WebElement searchIcon = cDriver.findElement(By.className("search-button"));
+        //cDriver.findElement(By.cssSelector("#search")).sendKeys("test");
+        //searchIcon.click();
+        wait(3);
+    }
 
     @Test
     public void logoutTest() {
@@ -79,7 +121,6 @@ public class AppTest {
         wait(2);
         System.out.println("Logout web test completed");
         System.out.println("---------------------------------------");
-        cDriver.close();
     }
 
 
