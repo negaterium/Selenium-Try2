@@ -1,27 +1,43 @@
 package org.fasttrackit;
 
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class AppTest {
-    WebDriver cDriver;
+
+    private static WebDriver cDriver;
+
+    @BeforeClass
+    public static void initDriver() {
+        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
+        cDriver = new ChromeDriver();
+    }
+
+    @AfterClass
+    public static void deactivateDriver() {
+        cDriver.quit();
+    }
 
     @Test
     public void runMultipletTests() {
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
-        WebDriver cDriver = new ChromeDriver();
+
+        initDriver();
+        cDriver.manage().window().maximize();
         loginTest();
-        wishList();
-        registerNewUser();
-        cDriver.quit();
+        //wishList();
+        //registerNewUser();
+        logoutTest();
+        deactivateDriver();
     }
 
 
     @Test
     public void loginTest() {
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
-        WebDriver cDriver = new ChromeDriver();
+        Assert.assertNotNull(cDriver);
         cDriver.get("https://fasttrackit.org/selenium-test/");
         System.out.println("---------------------------------------");
         System.out.println("Running login web test");
@@ -36,15 +52,40 @@ public class AppTest {
         wait(1);
         cDriver.findElement(By.cssSelector("#send2")).click();
         wait(2);
+        //WebElement userName = cDriver.findElement(By.cssSelector(""));
+        //Assert.assertTrue(userName.getText().contentEquals("Welcome, TesterFN TesterLN!"));
         System.out.println("Login web test completed");
         System.out.println("---------------------------------------");
-        cDriver.quit();
+        cDriver.close();
     }
+
+
+    @Test
+    public void logoutTest() {
+        Assert.assertNotNull(cDriver);
+        cDriver.get("https://fasttrackit.org/selenium-test/");
+        System.out.println("---------------------------------------");
+        System.out.println("Running logout web test");
+        WebElement accountButton = cDriver.findElement(By.cssSelector("#header > div > div.skip-links > div > a > span.label"));
+        WebElement logoutLink = cDriver.findElement(By.cssSelector("#header-account > div > ul > li.last > a"));
+        accountButton.click();
+        wait(1);
+        Assert.assertTrue(logoutLink.getText().contentEquals("Log Out"));
+        try {
+            logoutLink.click();
+        } catch (Exception e) {
+            System.out.println("Can't logout! Error: " + e.toString());
+        }
+        wait(2);
+        System.out.println("Logout web test completed");
+        System.out.println("---------------------------------------");
+        cDriver.close();
+    }
+
 
     @Test
     public void wishList() {
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
-        WebDriver cDriver = new ChromeDriver();
+        Assert.assertNotNull(cDriver);
         cDriver.get("https://fasttrackit.org/selenium-test/");
         System.out.println("---------------------------------------");
         System.out.println("Running wishlist web test");
@@ -57,13 +98,10 @@ public class AppTest {
         wait(2);
         System.out.println("Wishlist web test completed");
         System.out.println("---------------------------------------");
-        cDriver.quit();
     }
 
     @Test
     public void registerNewUser() {
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver.exe");
-        WebDriver cDriver = new ChromeDriver();
         System.out.println("---------------------------------------");
         System.out.println("Running register web test");
         cDriver.get("https://fasttrackit.org/selenium-test/");
@@ -86,7 +124,6 @@ public class AppTest {
 
         System.out.println("Register web test completed");
         System.out.println("---------------------------------------");
-        cDriver.quit();
     }
 
     private static void wait(int seconds) {
