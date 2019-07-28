@@ -28,7 +28,7 @@ public class AppTest {
         //initDriver();
         cDriver.manage().window().maximize();
         loginTest();
-        //wishList();
+        wishList();
         //registerNewUser();
         testSelectors();
         logoutTest();
@@ -60,27 +60,91 @@ public class AppTest {
     }
 
     @Test
-    public void addItemsToCart()
-    {
+    public void addItemsToCart() {
         Assert.assertNotNull(cDriver);
         cDriver.get("https://fasttrackit.org/selenium-test/");
         System.out.println("---------------------------------------");
         System.out.println("Running test to add items to the shopping cart");
         WebElement logo = cDriver.findElement(By.className("logo"));
         logo.click();
-        //WebElement saleButton = cDriver.findElement(By.className("li.level0.nav-5.active.parent"));
-        // #nav > ol > li.level0.nav-5.active.parent
-        cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.active.parent.menu-active > a")).click();
-        //saleButton.click();
+        WebElement saleButton = cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.parent"));
+        saleButton.click();
+        // Select first product
         WebElement firstImage = cDriver.findElement(By.cssSelector("#product-collection-image-423"));
         firstImage.click();
+        //Set color and size
+        cDriver.findElement(By.cssSelector("#swatch18 > span.swatch-label > img")).click();
+        cDriver.findElement(By.cssSelector("#option80")).click();
+        // Click add to cart
+        WebElement addToCartButton = cDriver.findElement(By.cssSelector("#product_addtocart_form > div.product-shop > div.product-options-bottom > div.add-to-cart > div.add-to-cart-buttons > button"));
+        addToCartButton.click();
+        wait(3);
+        // Select the second product
+        cDriver.get("https://fasttrackit.org/selenium-test/");
+        wait(5);
+        saleButton = cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.parent"));
+        saleButton.click();
+        WebElement secondImage = cDriver.findElement(By.cssSelector("#product-collection-image-403"));
+        secondImage.click();
+        //Set color and size
+        cDriver.findElement(By.cssSelector("#swatch27 > span.swatch-label")).click();
+        cDriver.findElement(By.cssSelector("#swatch81 > span.swatch-label")).click();
+        // Click add to cart
+        addToCartButton = cDriver.findElement(By.cssSelector("#product_addtocart_form > div.product-shop > div.product-options-bottom > div.add-to-cart > div.add-to-cart-buttons > button"));
+        addToCartButton.click();
+        wait(5);
+        // Selecting the first trash button
+        WebElement firstTrashButton = cDriver.findElement(By.cssSelector("#shopping-cart-table > tbody >  tr.first.odd > td.a-center.product-cart-remove.last > a"));
+        firstTrashButton.click();
 
-
-
-        wait(2);
+        wait(5);
         System.out.println("Add items to cart test completed");
         System.out.println("---------------------------------------");
+    }
 
+    @Test
+    public void proceedToCheckout() {
+        Assert.assertNotNull(cDriver);
+        cDriver.get("https://fasttrackit.org/selenium-test/");
+        System.out.println("---------------------------------------");
+        System.out.println("Running test to add one item to the shopping cart and proceed to checkout");
+        WebElement logo = cDriver.findElement(By.className("logo"));
+        logo.click();
+        WebElement saleButton = cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.parent"));
+        saleButton.click();
+        // Select first product
+        WebElement firstImage = cDriver.findElement(By.cssSelector("#product-collection-image-423"));
+        firstImage.click();
+        //Set color and size
+        cDriver.findElement(By.cssSelector("#swatch18 > span.swatch-label > img")).click();
+        cDriver.findElement(By.cssSelector("#option80")).click();
+        // Click add to cart
+        WebElement addToCartButton = cDriver.findElement(By.cssSelector("#product_addtocart_form > div.product-shop > div.product-options-bottom > div.add-to-cart > div.add-to-cart-buttons > button"));
+        addToCartButton.click();
+        wait(3);
+        // Click add to cart
+        WebElement proceedToCheckoutButton = cDriver.findElement(By.cssSelector("body > div > div.page > div.main-container.col1-layout > div > div > div.cart.display-single-price > div.cart-totals-wrapper > div > ul > li > button"));
+        proceedToCheckoutButton.click();
+        wait(5);
+        System.out.println("Proceed to checkout test completed");
+        System.out.println("---------------------------------------");
+    }
+
+    @Test
+    public void sortBy() {
+        Assert.assertNotNull(cDriver);
+        cDriver.get("https://fasttrackit.org/selenium-test/");
+        System.out.println("---------------------------------------");
+        System.out.println("Running test to check the sort by selector");
+        WebElement logo = cDriver.findElement(By.className("logo"));
+        logo.click();
+        WebElement saleButton = cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.parent"));
+        saleButton.click();
+        WebElement sortByButton = cDriver.findElement(By.cssSelector("body > div > div.page > div.main-container.col3-layout > div > div.col-wrapper > div.col-main > div.category-products > div.toolbar > div.sorter > div > select"));
+        sortByButton.click();
+        wait(5);
+        System.out.println("Sort by test completed");
+        System.out.println("---------------------------------------");
     }
 
     @Test
@@ -93,12 +157,14 @@ public class AppTest {
         WebElement searchIcon = cDriver.findElement(By.className("search-button"));
         cDriver.findElement(By.cssSelector("#search")).sendKeys("test");
         searchIcon.click();
-        wait(3);
+        System.out.println("Checking the first Delete button, after adding items to cart");
         addItemsToCart();
-        System.out.println("Checking the first Delete button");
-        //WebElement searchIcon = cDriver.findElement(By.className("search-button"));
-        //cDriver.findElement(By.cssSelector("#search")).sendKeys("test");
-        //searchIcon.click();
+        wait(3);
+        System.out.println("Checking the second Proceed to checkout button");
+        proceedToCheckout();
+        wait(3);
+        System.out.println("Checking the sort by selector");
+        sortBy();
         wait(3);
     }
 
