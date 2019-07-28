@@ -28,9 +28,9 @@ public class AppTest {
         //initDriver();
         cDriver.manage().window().maximize();
         loginTest();
-        wishList();
+        //wishList();
         //registerNewUser();
-        testSelectors();
+        //testSelectors();
         logoutTest();
         deactivateDriver();
     }
@@ -53,8 +53,10 @@ public class AppTest {
         wait(1);
         cDriver.findElement(By.cssSelector("#send2")).click();
         wait(2);
-        //WebElement userName = cDriver.findElement(By.cssSelector(""));
-        //Assert.assertTrue(userName.getText().contentEquals("Welcome, TesterFN TesterLN!"));
+        WebElement userName = cDriver.findElement(By.className("hello"));
+        Assert.assertTrue(userName.getText().contentEquals("Hello, TesterFN TesterLN!"));
+        System.out.println("User name text content = " + userName.getText());
+        wait(2);
         System.out.println("Login web test completed");
         System.out.println("---------------------------------------");
     }
@@ -68,9 +70,13 @@ public class AppTest {
         WebElement logo = cDriver.findElement(By.className("logo"));
         logo.click();
         WebElement saleButton = cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.parent"));
+        System.out.println("Sale text = " + saleButton.getText());
+        Assert.assertTrue(saleButton.getText().contentEquals("SALE"));
         saleButton.click();
         // Select first product
         WebElement firstImage = cDriver.findElement(By.cssSelector("#product-collection-image-423"));
+        System.out.println("Image size = " + firstImage.getSize());
+        Assert.assertTrue(firstImage.getSize().toString().equals("(153, 153)"));
         firstImage.click();
         //Set color and size
         cDriver.findElement(By.cssSelector("#swatch18 > span.swatch-label > img")).click();
@@ -124,6 +130,8 @@ public class AppTest {
         wait(3);
         // Click add to cart
         WebElement proceedToCheckoutButton = cDriver.findElement(By.cssSelector("body > div > div.page > div.main-container.col1-layout > div > div > div.cart.display-single-price > div.cart-totals-wrapper > div > ul > li > button"));
+        System.out.println("Proceed to checkout button text = " + proceedToCheckoutButton.getText());
+        Assert.assertTrue(proceedToCheckoutButton.getText().contentEquals("PROCEED TO CHECKOUT"));
         proceedToCheckoutButton.click();
         wait(5);
         System.out.println("Proceed to checkout test completed");
@@ -141,7 +149,10 @@ public class AppTest {
         WebElement saleButton = cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.parent"));
         saleButton.click();
         WebElement sortByButton = cDriver.findElement(By.cssSelector("body > div > div.page > div.main-container.col3-layout > div > div.col-wrapper > div.col-main > div.category-products > div.toolbar > div.sorter > div > select"));
+        Assert.assertNotNull(sortByButton);
+        System.out.println("Sort by list content = " + sortByButton.getText());
         sortByButton.click();
+        Assert.assertNotNull(sortByButton);
         wait(5);
         System.out.println("Sort by test completed");
         System.out.println("---------------------------------------");
@@ -176,6 +187,8 @@ public class AppTest {
         System.out.println("Running logout web test");
         WebElement accountButton = cDriver.findElement(By.cssSelector("#header > div > div.skip-links > div > a > span.label"));
         WebElement logoutLink = cDriver.findElement(By.cssSelector("#header-account > div > ul > li.last > a"));
+        System.out.println("Logout text font size = " + logoutLink.getCssValue("font-size"));
+        Assert.assertTrue(logoutLink.getCssValue("font-size").contentEquals("14px"));
         accountButton.click();
         wait(1);
         Assert.assertTrue(logoutLink.getText().contentEquals("Log Out"));
