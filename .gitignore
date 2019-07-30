@@ -1,3 +1,4 @@
 
 *.class
 *.class
+target/test-classes/org/fasttrackit/AppTest.class
