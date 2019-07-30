@@ -66,6 +66,23 @@ public class AppTest {
     }
 
     @Test
+    public void qXPATHTest() {
+        Assert.assertNotNull(cDriver);
+        cDriver.get("https://fasttrackit.org/selenium-test/");
+        System.out.println("---------------------------------------");
+        System.out.println("Running XPATH web test");
+        // Click on the home and decor image
+        WebElement img1 = cDriver.findElement(By.xpath("//*[@id=\"top\"]/body/div/div[2]/div[2]/div/div/div[2]/ul/li[1]/a"));
+        img1.click();
+        wait(3);
+        WebElement pageTitle = cDriver.findElement(By.xpath("//*[@id=\"top\"]/body/div/div[2]/div[2]/div/div[2]/div[2]"));
+        System.out.println("The page title is: " + pageTitle.getText());
+        Assert.assertTrue(pageTitle.getText().contentEquals("HOME & DECOR"));
+        System.out.println("XPATH check web test completed");
+        System.out.println("---------------------------------------");
+    }
+
+    @Test
     public void addItemsToCart() {
         Assert.assertNotNull(cDriver);
         cDriver.get("https://fasttrackit.org/selenium-test/");
