@@ -6,6 +6,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppTest {
 
@@ -69,7 +73,7 @@ public class AppTest {
         System.out.println("Running test to add items to the shopping cart");
         WebElement logo = cDriver.findElement(By.className("logo"));
         logo.click();
-        WebElement saleButton = cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.parent"));
+        WebElement saleButton = cDriver.findElement(By.cssSelector("li.level0.nav-5.parent"));
         System.out.println("Sale text = " + saleButton.getText());
         Assert.assertTrue(saleButton.getText().contentEquals("SALE"));
         saleButton.click();
@@ -82,13 +86,13 @@ public class AppTest {
         cDriver.findElement(By.cssSelector("#swatch18 > span.swatch-label > img")).click();
         cDriver.findElement(By.cssSelector("#option80")).click();
         // Click add to cart
-        WebElement addToCartButton = cDriver.findElement(By.cssSelector("#product_addtocart_form > div.product-shop > div.product-options-bottom > div.add-to-cart > div.add-to-cart-buttons > button"));
+        WebElement addToCartButton = cDriver.findElement(By.cssSelector("div.add-to-cart-buttons > button"));
         addToCartButton.click();
         wait(3);
         // Select the second product
         cDriver.get("https://fasttrackit.org/selenium-test/");
         wait(5);
-        saleButton = cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.parent"));
+        saleButton = cDriver.findElement(By.cssSelector("li.level0.nav-5.parent"));
         saleButton.click();
         WebElement secondImage = cDriver.findElement(By.cssSelector("#product-collection-image-403"));
         secondImage.click();
@@ -96,11 +100,11 @@ public class AppTest {
         cDriver.findElement(By.cssSelector("#swatch27 > span.swatch-label")).click();
         cDriver.findElement(By.cssSelector("#swatch81 > span.swatch-label")).click();
         // Click add to cart
-        addToCartButton = cDriver.findElement(By.cssSelector("#product_addtocart_form > div.product-shop > div.product-options-bottom > div.add-to-cart > div.add-to-cart-buttons > button"));
+        addToCartButton = cDriver.findElement(By.cssSelector("div.add-to-cart-buttons > button"));
         addToCartButton.click();
         wait(5);
         // Selecting the first trash button
-        WebElement firstTrashButton = cDriver.findElement(By.cssSelector("#shopping-cart-table > tbody >  tr.first.odd > td.a-center.product-cart-remove.last > a"));
+        WebElement firstTrashButton = cDriver.findElement(By.cssSelector("tr.first.odd > td.a-center.product-cart-remove.last > a"));
         firstTrashButton.click();
 
         wait(5);
@@ -116,7 +120,7 @@ public class AppTest {
         System.out.println("Running test to add one item to the shopping cart and proceed to checkout");
         WebElement logo = cDriver.findElement(By.className("logo"));
         logo.click();
-        WebElement saleButton = cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.parent"));
+        WebElement saleButton = cDriver.findElement(By.cssSelector("li.level0.nav-5.parent"));
         saleButton.click();
         // Select first product
         WebElement firstImage = cDriver.findElement(By.cssSelector("#product-collection-image-423"));
@@ -125,11 +129,11 @@ public class AppTest {
         cDriver.findElement(By.cssSelector("#swatch18 > span.swatch-label > img")).click();
         cDriver.findElement(By.cssSelector("#option80")).click();
         // Click add to cart
-        WebElement addToCartButton = cDriver.findElement(By.cssSelector("#product_addtocart_form > div.product-shop > div.product-options-bottom > div.add-to-cart > div.add-to-cart-buttons > button"));
+        WebElement addToCartButton = cDriver.findElement(By.cssSelector("div.add-to-cart-buttons > button"));
         addToCartButton.click();
         wait(3);
         // Click add to cart
-        WebElement proceedToCheckoutButton = cDriver.findElement(By.cssSelector("body > div > div.page > div.main-container.col1-layout > div > div > div.cart.display-single-price > div.cart-totals-wrapper > div > ul > li > button"));
+        WebElement proceedToCheckoutButton = cDriver.findElement(By.cssSelector("li.method-checkout-cart-methods-onepage-bottom > button"));
         System.out.println("Proceed to checkout button text = " + proceedToCheckoutButton.getText());
         Assert.assertTrue(proceedToCheckoutButton.getText().contentEquals("PROCEED TO CHECKOUT"));
         proceedToCheckoutButton.click();
@@ -141,16 +145,24 @@ public class AppTest {
     @Test
     public void sortBy() {
         Assert.assertNotNull(cDriver);
+        List<String> sortList = new ArrayList<String>();
         cDriver.get("https://fasttrackit.org/selenium-test/");
         System.out.println("---------------------------------------");
         System.out.println("Running test to check the sort by selector");
         WebElement logo = cDriver.findElement(By.className("logo"));
         logo.click();
-        WebElement saleButton = cDriver.findElement(By.cssSelector("#nav > ol > li.level0.nav-5.parent"));
+        WebElement saleButton = cDriver.findElement(By.cssSelector("li.level0.nav-5.parent"));
         saleButton.click();
-        WebElement sortByButton = cDriver.findElement(By.cssSelector("body > div > div.page > div.main-container.col3-layout > div > div.col-wrapper > div.col-main > div.category-products > div.toolbar > div.sorter > div > select"));
+        //WebElement sortByButton = cDriver.findElement(By.cssSelector("body > div > div.page > div.main-container.col3-layout > div > div.col-wrapper > div.col-main > div.category-products > div.toolbar > div.sorter > div > select"));
+        WebElement sortByButton = cDriver.findElement(By.cssSelector("div.sort-by > select"));
         Assert.assertNotNull(sortByButton);
         System.out.println("Sort by list content = " + sortByButton.getText());
+        WebElement selectElement = cDriver.findElement(By.cssSelector("div.sort-by > select"));
+        Select select = new Select(selectElement);
+        List<WebElement> allOptions = select.getOptions();
+        for (WebElement myOpt : allOptions) {
+            System.out.println(" --- " + myOpt);
+        }
         sortByButton.click();
         Assert.assertNotNull(sortByButton);
         wait(5);
