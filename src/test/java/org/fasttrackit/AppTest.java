@@ -171,10 +171,12 @@ public class AppTest {
         WebElement saleButton = cDriver.findElement(By.cssSelector("li.level0.nav-5.parent"));
         saleButton.click();
         //WebElement sortByButton = cDriver.findElement(By.cssSelector("body > div > div.page > div.main-container.col3-layout > div > div.col-wrapper > div.col-main > div.category-products > div.toolbar > div.sorter > div > select"));
-        WebElement sortByButton = cDriver.findElement(By.cssSelector("div.toolbar > div.sorter > div > select"));
+        WebElement sortByButton = cDriver.findElement(By.cssSelector(".category-products > div.toolbar > div.sorter > div > select"));
         Assert.assertNotNull(sortByButton);
+        List<WebElement> sortButtons = cDriver.findElements(By.cssSelector("div.category-products > div.toolbar > div.sorter > div > select"));
+        System.out.println("Sort buttons are :" + sortButtons.toString());
         System.out.println("Sort by list content = " + sortByButton.getText());
-        WebElement selectElement = cDriver.findElement(By.cssSelector("div.toolbar > div.sorter > div > select"));
+        WebElement selectElement = cDriver.findElement(By.cssSelector("div.category-products > div.toolbar > div.sorter > div > select"));
         Select select = new Select(selectElement);
         List<WebElement> allOptions = select.getOptions();
         for (WebElement myOpt : allOptions) {
